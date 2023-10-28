@@ -1,0 +1,6 @@
+<li class="nav-item">
+  <%= link_to args[:path], method: args[:method] || nil, class: "nav-link text-light" do %>
+    <i class="<%= args[:fa_class] %>"></i>
+    <%= args[:text] %>
+  <% end %>
+</li>

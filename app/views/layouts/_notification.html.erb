@@ -1,0 +1,10 @@
+<% flash.each do |message_type, message| %>
+  <% if message_type == "notice" %>
+    <div class="alert alert-success my-2">
+      <div class="font-weight-bold d-flex align-items-center">
+        <i class="fa-regular fa-circle-check mr-2" style="font-size: 30px;"></i>
+        <%= message %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -7,11 +7,17 @@
     <%= csp_meta_tag %>
 
     <script src="https://kit.fontawesome.com/0e5135d470.js" crossorigin="anonymous"></script>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "layouts/header" %>
+    <main class="container py-2">
+      <%= yield :alert %>
+      <%= render "layouts/notification" %>
+      <%= yield %>
+    </main>
+    <%= render "layouts/footer" %>
   </body>
 </html>
