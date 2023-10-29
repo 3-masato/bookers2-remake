@@ -2,7 +2,7 @@
   <% case type %>
   <% when :sidebar %>
     <aside class="col-md-3">
-
+      <%= render "layouts/sidebar", user: user %>
     </aside>
     <div class="col-md-8 offset-md-1">
       <%= yield %>

@@ -1,0 +1,13 @@
+<tr>
+  <td data-col="avatar">
+    <%= link_to book.user do %>
+      <%= image_tag book.user.get_profile_image, size: "48x48" %>
+    <% end %>
+  </td>
+  <td data-col="title">
+    <%= link_to book.title, book %>
+  </td>
+  <td data-col="opinion">
+    <%= book.body %>
+  </td>
+</tr>

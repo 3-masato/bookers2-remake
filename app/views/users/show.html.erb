@@ -1,2 +1,7 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<%= render "layouts/frame", user: @user, type: :sidebar do %>
+  <%= render partial: "books/index", locals: {
+    heading: "Books",
+    books: @user.books,
+    empty_message: empty_index_text(@user)
+  } %>
+<% end %>

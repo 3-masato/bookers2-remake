@@ -1,0 +1,15 @@
+<section class="mb-4">
+  <h2>User info</h2>
+
+  <div class="user-profile my-4">
+    <div class="text-center"><%= image_tag user.get_profile_image, size: "128x128" %></div>
+    <div class="font-weight-bold h5 my-2"><%= user.name %></div>
+    <div><%= user.introduction %></div>
+  </div>
+
+  <div class="text-center">
+    <%= link_to edit_user_path(user), class: "mx-auto btn btn-sm btn-outline-secondary px-4" do %>
+      <i class="fa-solid fa-user-gear"></i>
+    <% end %>
+  </div>
+</section>

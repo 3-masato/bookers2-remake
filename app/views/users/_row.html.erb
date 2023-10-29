@@ -1,0 +1,12 @@
+<tr>
+  <td data-col="avatar">
+    <%= image_tag user.get_profile_image, size: "48x48" %>
+  </td>
+  <td data-col="name">
+    <%= user.name %>
+  </td>
+
+  <td data-col="show">
+    <%= link_to 'Show', user %>
+  </td>
+</tr>

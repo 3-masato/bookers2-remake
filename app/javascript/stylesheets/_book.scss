@@ -1,0 +1,37 @@
+.book-details-item {
+  display: grid;
+  gap: 8px;
+  grid-template: "icon body action" / 96px 1fr 6rem;
+
+  &-icon {
+    grid-area: icon;
+  }
+
+  &-info {
+    display: flex;
+  }
+
+  &-body {
+    grid-area: body;
+  }
+
+  &-content {
+    display: block;
+  }
+
+  &-title {
+    white-space: break-spaces;
+    line-break: anywhere;
+  }
+
+  &-opinion {
+    white-space: break-spaces;
+    line-break: anywhere;
+  }
+
+  &-action {
+    grid-area: action;
+    justify-self: center;
+  }
+}
+

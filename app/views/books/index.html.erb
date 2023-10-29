@@ -1,2 +1,4 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<%= render "layouts/errors", model: @book %>
+<%= render "layouts/frame", user: @user, type: :sidebar do %>
+  <%= render "books/index", books: @books, heading: "Books" %>
+<% end %>

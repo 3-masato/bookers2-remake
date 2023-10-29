@@ -1,0 +1,24 @@
+<section class="mb-4">
+  <h2><%= heading %></h2>
+  <% if books.count == 0 %>
+    <% unless (empty_message ||= "").empty? %>
+      <p class="text-center"><%= empty_message %></p>
+    <% end %>
+  <% else %>
+    <div class="table-responsive">
+      <table class='table table-hover table-inverse'>
+        <thead>
+          <tr>
+            <th data-col="avatar"></th>
+            <th data-col="title">Title</th>
+            <th data-col="opinion">Opinion</th>
+            <th data-col="rest" colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: "books/row", collection: books, as: :book %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</section>

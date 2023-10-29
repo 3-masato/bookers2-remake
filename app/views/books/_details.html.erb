@@ -1,0 +1,36 @@
+<section class="mb-4">
+  <% user = User.find(book.user_id) %>
+  <h2>Book detail</h2>
+
+  <div class="my-4">
+    <div class="book-details-item">
+      <div class="book-details-item-icon">
+        <%= link_to user_path(book.user) do %>
+          <%= image_tag book.user.get_profile_image, size:"96x96" %>
+        <% end %>
+      </div>
+      <div class="book-details-item-body">
+        <div class="book-details-item-info">
+          <%= render partial: "shared/item-info", locals: {
+            user: book.user,
+            created_at: book.created_at
+          } %>
+        </div>
+        <div class="book-details-item-content">
+          <h3 class="book-details-item-title"><%= book.title %></h3>
+          <p class="book-details-item-opinion"><%= book.body %></p>
+        </div>
+      </div>
+      <div class="book-details-item-action">
+        <% if book.user == current_user %>
+          <%= link_to edit_book_path(book), class: "btn btn-outline-primary btn-sm btn-block" do %>
+            <i class="fa-solid fa-pencil"></i> Edit
+          <% end %>
+          <%= link_to book_path(book), method: :delete, "data-confirm" => "Are you sure?", class: "btn btn-outline-danger btn-sm btn-block" do %>
+            <i class="fa-solid fa-trash-can"></i> Destroy
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
