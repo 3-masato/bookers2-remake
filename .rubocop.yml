@@ -104,7 +104,7 @@ Layout/IndentationConsistency:
 
 # Two spaces, no tabs (for indentation).
 Layout/IndentationWidth:
-  Enabled: true
+  Enabled: false
 
 Layout/LeadingCommentSpace:
   Enabled: true
