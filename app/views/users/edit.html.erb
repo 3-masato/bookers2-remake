@@ -1,2 +1,4 @@
-<h1>Users#edit</h1>
-<p>Find me in app/views/users/edit.html.erb</p>
+<%= render "layouts/errors", model: @user %>
+<%= render "layouts/frame", type: :medium do %>
+  <%= render "users/form", user: @user, heading: "User info", action: :update %>
+<% end %>
