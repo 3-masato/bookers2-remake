@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   def index
     @user = current_user
-    @books = Book.all
+    @books = Book.with_details
   end
 
   def show
@@ -24,7 +24,7 @@ class BooksController < ApplicationController
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
       @user = current_user
-      @books = Book.all
+      @books = Book.with_details
       render :index
     end
   end

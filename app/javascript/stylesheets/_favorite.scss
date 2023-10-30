@@ -1,0 +1,48 @@
+$fav-color: #f43f5e;
+
+.favorite-body {
+  &[data-faved="true"] {
+    color: $fav-color;
+  }
+
+  &-btn {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: $fav-color;
+      text-decoration: none;
+
+      .fa-heart::after {
+        background-color: rgba($fav-color, 0.1);
+      }
+    }
+
+    &:active {
+      color: $fav-color;
+      text-decoration: none;
+
+      .fa-heart::after {
+        background-color: rgba($fav-color, 0.2);
+      }
+    }
+  }
+
+  .fa-heart {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      z-index: -1;
+      border-radius: 50%;
+      background-color: transparent;
+      transition-duration: 200ms;
+      transition-property: background-color;
+    }
+  }
+}

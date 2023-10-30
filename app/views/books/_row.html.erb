@@ -10,4 +10,9 @@
   <td data-col="opinion">
     <%= book.body %>
   </td>
+  <td data-col="fav">
+    <div id="fav-<%= book.id %>">
+      <%= render "favorites/btn", book: book %>
+    </div>
+  </td>
 </tr>

@@ -7,9 +7,12 @@ class User < ApplicationRecord
   has_one_attached :profile_image
 
   has_many :books, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   validates :name, uniqueness: true, length: { in: 2..20 }
   validates :introduction, length: { maximum: 50 }
+
+  scope :with_details, -> { includes(profile_image_attachment: :blob) }
 
   def get_profile_image
     (profile_image.attached?) ? profile_image : "default-user-icon.jpeg"
