@@ -190,7 +190,8 @@ describe "[STEP2] ユーザログイン後のテスト" do
         is_exist = 0
         open("app/views/layouts/application.html.erb").each do |line|
           strip_line = line.chomp.delete(" ")
-          if strip_line.include?("<%=javascript_pack_tag'application','data-turbolinks-track':'reload'%>")
+          # シングルクォーテーションまたはダブルクォーテーションを許容する正規表現を使用
+          if strip_line.match(/<%=[\s]*javascript_pack_tag[\s]*['"]application['"],[\s]*['"]data-turbolinks-track['"]:[\s]*['"]reload['"]%>/)
             is_exist = 1
             break
           end
