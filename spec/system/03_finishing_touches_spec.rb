@@ -237,6 +237,9 @@ describe "[STEP3] 仕上げのテスト" do
         it "投稿の削除リンクが表示されない" do
           expect(page).not_to have_link "Destroy"
         end
+        it "投稿のいいねボタンが表示される" do
+          expect(page).to have_link href: book_favorites_path(other_book)
+        end
       end
 
       context "サイドバーの確認" do

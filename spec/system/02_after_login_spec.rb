@@ -59,6 +59,10 @@ describe "[STEP2] ユーザログイン後のテスト" do
         expect(page).to have_content book.body
         expect(page).to have_content other_book.body
       end
+      it "自分の投稿と他人の投稿のいいねボタンが表示される" do
+        expect(page).to have_link href: book_favorites_path(book)
+        expect(page).to have_link href: book_favorites_path(other_book)
+      end
     end
 
     context "サイドバーの確認" do
@@ -131,6 +135,9 @@ describe "[STEP2] ユーザログイン後のテスト" do
       end
       it "投稿の削除リンクが表示される" do
         expect(page).to have_link "Destroy", href: book_path(book)
+      end
+      it "投稿のいいねボタンが表示される" do
+        expect(page).to have_link href: book_favorites_path(book)
       end
     end
 
@@ -330,6 +337,9 @@ describe "[STEP2] ユーザログイン後のテスト" do
       it "投稿一覧に自分の投稿のbodyが表示される" do
         expect(page).to have_content book.body
       end
+      it "投稿一覧に自分の投稿のいいねボタンが表示される" do
+        expect(page).to have_link href: book_favorites_path(book)
+      end
       it "他人の投稿は表示されない" do
         expect(page).not_to have_link "", href: user_path(other_user)
         expect(page).not_to have_content other_book.title
@@ -408,6 +418,105 @@ describe "[STEP2] ユーザログイン後のテスト" do
       end
       it "リダイレクト先が、自分のユーザ詳細画面になっている" do
         expect(current_path).to eq "/users/" + user.id.to_s
+      end
+    end
+  end
+
+  describe "いいねボタンのテスト" do
+    context "表示の確認" do
+      it "いいねされていない投稿に対しては、いいね作成ボタンを表示させる" do
+        unfavorited_book = FactoryBot.create(:book, user: user)
+        visit book_path(unfavorited_book)
+        expect(page).to have_selector(".favorite-body a[data-method='post']")
+      end
+
+      it "いいねされている投稿に対しては、いいね削除ボタンを表示させる" do
+        favorited_book = FactoryBot.create(:book, user: user)
+        FactoryBot.create(:favorite, user: user, book: favorited_book)
+        visit book_path(favorited_book)
+        expect(page).to have_selector(".favorite-body a[data-method='delete']")
+      end
+
+      it "いいねの数が表示されている" do
+        expect(page).to have_content(book.favorites.count.to_s)
+      end
+    end
+
+    context "機能の確認" do
+      # テスト中にJavaScriptの非同期通信を正しく検知・待機する方法に問題があったため、
+      # 一時的な対応として、`find(".favorite-body a[data-method='post']").click`実行後に明示的にページを再訪問しています。
+      # AWS Cloud9の環境において、特定のJavaScript動作に関連するCapybaraの待機や検知がうまく動作しない場合が確認されました。
+      # この再訪問はテストの完全性を確保するためのものであり、将来的にはより適切な待機・検知方法に置き換える予定です。
+      # ==========================================================
+      it "いいねをしたら、いいねの数が増える" do
+        unfavorited_book = FactoryBot.create(:book, user: user)
+        visit book_path(unfavorited_book)
+        initial_count = find(".favorite-body-count").text.to_i
+
+        find(".favorite-body a[data-method='post']").click
+        visit book_path(unfavorited_book)
+
+        expect(page).to have_selector(".favorite-body-count", text: initial_count + 1)
+      end
+
+      it "いいねをはずしたら、いいねの数が減る", js: true do
+        favorited_book = FactoryBot.create(:book, user: user)
+        FactoryBot.create(:favorite, user: user, book: favorited_book)
+        visit book_path(favorited_book)
+        initial_count = find(".favorite-body-count").text.to_i
+
+        find(".favorite-body a[data-method='delete']").click
+        visit book_path(favorited_book)
+
+        expect(page).to have_selector(".favorite-body-count", text: initial_count - 1)
+      end
+      # ==========================================================
+    end
+
+    describe "アイコンの確認" do
+      let!(:unfavorited_book) {
+        create(:book, user: user)
+      }
+      let!(:favorited_book) {
+        book = create(:book, user: user)
+        create(:favorite, user: user, book: book)
+        book
+      }
+
+      context "本の一覧ページ" do
+        it "いいね前のアイコン" do
+          visit books_path
+
+          within "#fav-#{unfavorited_book.id}" do
+            expect(page).to have_selector ".fa-regular.fa-heart, .far.fa-heart"
+          end
+        end
+
+        it "いいね後のアイコン" do
+          visit books_path
+
+          within "#fav-#{favorited_book.id}" do
+            expect(page).to have_selector ".fa-solid.fa-heart, .fas.fa-heart"
+          end
+        end
+      end
+
+      context "本の詳細ページ" do
+        it "いいね前のアイコン" do
+          visit book_path(unfavorited_book)
+
+          within "#fav-#{unfavorited_book.id}" do
+            expect(page).to have_selector ".fa-regular.fa-heart, .far.fa-heart"
+          end
+        end
+
+        it "いいね後のアイコン" do
+          visit book_path(favorited_book)
+
+          within "#fav-#{favorited_book.id}" do
+            expect(page).to have_selector ".fa-solid.fa-heart, .fas.fa-heart"
+          end
+        end
       end
     end
   end
