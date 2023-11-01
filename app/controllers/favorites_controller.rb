@@ -1,6 +1,6 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_book
+  before_action :set_book, only: [:create, :destroy]
 
   def create
     current_user.favorites.create(book_id: @book.id)

@@ -1,0 +1,22 @@
+<% user = book_comment.user %>
+<div class="book-comment-item">
+  <div class="book-comment-item-icon">
+    <%= image_tag user.get_profile_image, size:"48x48" %>
+  </div>
+  <div class="book-comment-item-body">
+    <div class="book-comment-item-info">
+      <%= render partial: "shared/item-info", locals: {
+        user: user,
+        created_at: book_comment.created_at
+      } %>
+    </div>
+    <div class="book-comment-item-comment"><%= book_comment.comment %></div>
+  </div>
+  <div class="book-comment-item-action">
+    <% if user == current_user %>
+      <%= link_to book_book_comment_path(book, book_comment), method: :delete, "data-confirm" => "Are you sure?", remote: true, class: "btn btn-outline-danger btn-sm" do %>
+        <i class="fa-solid fa-trash-can"></i> Destroy
+      <% end %>
+    <% end %>
+  </div>
+</div>

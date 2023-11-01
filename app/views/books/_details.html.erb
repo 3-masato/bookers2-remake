@@ -37,7 +37,14 @@
   <hr />
 
   <div class="d-flex justify-content-around mx-auto w-50">
+    <div id="comments-count"><%= render "book_comments/count", book: book %></div>
     <div id="fav-<%= book.id %>"><%= render "favorites/btn", book: book %></div>
   </div>
 
+  <hr>
+
+  <div>
+    <div id="comments-index"><%= render "book_comments/index", book: book %></div>
+    <div><%= render "book_comments/form", book: book, book_comment: book_comment %></div>
+  </div>
 </section>

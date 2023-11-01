@@ -1,0 +1,34 @@
+.book-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.book-comment-item {
+  display: grid;
+  gap: 8px;
+  grid-template: "icon body action" / 48px 1fr 6rem;
+
+  &-icon {
+    grid-area: icon;
+  }
+
+  &-info {
+    display: flex;
+  }
+
+  &-body {
+    grid-area: body;
+  }
+
+  &-comment {
+    white-space: break-spaces;
+    line-break: anywhere;
+  }
+
+  &-action {
+    grid-area: action;
+    justify-self: center;
+  }
+}
