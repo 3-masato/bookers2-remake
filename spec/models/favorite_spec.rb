@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Favoriteモデルのテスト", type: :model do
   describe "バリデーションのテスト" do
     let(:user) { create(:user) }
-    let(:book) { build(:book, user_id: user.id) }
+    let(:book) { create(:book) }
 
     context "ユーザーが本を複数回いいねしようとしたとき" do
       before do

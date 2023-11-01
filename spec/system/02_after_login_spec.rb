@@ -6,6 +6,9 @@ describe "[STEP2] ユーザログイン後のテスト" do
   let!(:book) { create(:book, user: user) }
   let!(:other_book) { create(:book, user: other_user) }
 
+  let!(:user_comment) { create(:book_comment, user: user, book: book) }
+  let!(:other_user_comment) { create(:book_comment, user: other_user, book: book) }
+
   before do
     visit new_user_session_path
     fill_in "user[name]", with: user.name
@@ -62,6 +65,10 @@ describe "[STEP2] ユーザログイン後のテスト" do
       it "自分の投稿と他人の投稿のいいねボタンが表示される" do
         expect(page).to have_link href: book_favorites_path(book)
         expect(page).to have_link href: book_favorites_path(other_book)
+      end
+      it "自分の投稿と他人の投稿のコメント数が表示される" do
+        expect(page).to have_content book.book_comments.count
+        expect(page).to have_content other_book.book_comments.count
       end
     end
 
@@ -139,6 +146,15 @@ describe "[STEP2] ユーザログイン後のテスト" do
       it "投稿のいいねボタンが表示される" do
         expect(page).to have_link href: book_favorites_path(book)
       end
+      it "投稿のコメント数が表示される" do
+        expect(page).to have_content book.book_comments.count
+      end
+      it "自分のコメントの削除リンクが表示される" do
+        expect(page).to have_link "Destroy", href: book_book_comment_path(book, user_comment)
+      end
+      it "他人のコメントの削除リンクが表示されない" do
+        expect(page).not_to have_link "Destroy", href: book_book_comment_path(book, other_user_comment)
+      end
     end
 
     context "サイドバーの確認" do
@@ -206,7 +222,7 @@ describe "[STEP2] ユーザログイン後のテスト" do
         expect(is_exist).to eq(1)
       end
       before do
-        click_link "Destroy"
+        click_link "Destroy", href: book_path(book)
       end
       it "正しく削除される" do
         expect(Book.where(id: book.id).count).to eq 0
@@ -339,6 +355,9 @@ describe "[STEP2] ユーザログイン後のテスト" do
       end
       it "投稿一覧に自分の投稿のいいねボタンが表示される" do
         expect(page).to have_link href: book_favorites_path(book)
+      end
+      it "投稿一覧に自分の投稿のコメント数が表示される" do
+        expect(page).to have_content book.book_comments.count
       end
       it "他人の投稿は表示されない" do
         expect(page).not_to have_link "", href: user_path(other_user)
@@ -516,6 +535,129 @@ describe "[STEP2] ユーザログイン後のテスト" do
           within "#fav-#{favorited_book.id}" do
             expect(page).to have_selector ".fa-solid.fa-heart, .fas.fa-heart"
           end
+        end
+      end
+    end
+  end
+
+  describe "コメント機能のテスト" do
+    before do
+      @second_user_comment = create(:book_comment, user: user, book: book)
+      @second_other_user_comment = create(:book_comment, user: other_user, book: book)
+      visit book_path(book)
+    end
+
+    context "表示の確認" do
+      it "コメントの数が表示されている" do
+        expect(page).to have_content(book.book_comments.count.to_s)
+      end
+    end
+
+    context "機能の確認" do
+      it "コメントをしたらコメントの数が増える" do
+        uncommented_book = create(:book, user: user)
+
+        visit book_path(uncommented_book)
+
+        initial_count = find(".comment-count-body-count").text.to_i
+
+        # コメントを作成
+        create(:book_comment, user: user, book: uncommented_book)
+
+        # 非同期通信を正しく検知するのに問題があったため、明示的にページ再読み込みを行う。
+        visit book_path(uncommented_book)
+
+        expect(page).to have_selector(".comment-count-body-count", text: initial_count + 1)
+      end
+
+      it "コメントを削除したらコメントの数が減る", js: true do
+        commented_book = create(:book, user: user)
+        commented_book_comment = create(:book_comment, user: user, book: commented_book)
+
+        visit book_path(commented_book)
+
+        initial_count = find(".comment-count-body-count").text.to_i
+
+        # コメントを削除
+        commented_book_comment.destroy
+
+        # 非同期通信を正しく検知するのに問題があったため、明示的にページ再読み込みを行う。
+        visit book_path(commented_book)
+
+        expect(page).to have_selector(".comment-count-body-count", text: initial_count - 1)
+      end
+    end
+
+    context "自分が投稿したコメント" do
+      it "自分のコメントが表示される" do
+        within "#comments-index" do
+          expect(page).to have_content(@second_user_comment.comment)
+        end
+      end
+      it "自分のコメントに名前が表示されている" do
+        within "#comments-index" do
+          expect(page).to have_link user.name, href: user_path(user)
+        end
+      end
+      it "自分のコメントに削除リンクが表示されている" do
+        within "#comments-index" do
+          expect(page).to have_link "Destroy", href: book_book_comment_path(book, @second_user_comment)
+        end
+      end
+      it "自分のコメントを削除できる" do
+        click_link "Destroy", href: book_book_comment_path(book, @second_user_comment)
+        expect(BookComment.where(id: @second_user_comment.id).count).to eq 0
+      end
+    end
+
+    context "他人が投稿したコメント" do
+      it "他人の投稿したコメントが表示される" do
+        within "#comments-index" do
+          expect(page).to have_content(@second_other_user_comment.comment)
+        end
+      end
+      it "他人のコメントに名前が表示されている" do
+        within "#comments-index" do
+          expect(page).to have_link other_user.name, href: user_path(other_user)
+        end
+      end
+      it "他人のコメントに削除リンクが表示されていない" do
+        within "#comments-index" do
+          expect(page).not_to have_link "Destroy", href: book_book_comment_path(book, @second_other_user_comment)
+        end
+      end
+    end
+
+    context "コメント投稿フォーム" do
+      it "commentフォームが表示される" do
+        within "#comment-form" do
+          expect(page).to have_field("book_comment[comment]")
+        end
+      end
+      it "commentフォームに値が入っていない" do
+        within "#comment-form" do
+          expect(find_field("book_comment[comment]").text).to be_blank
+        end
+      end
+      it "Commentボタンが表示される" do
+        within "#comment-form" do
+          expect(page).to have_button "Comment"
+        end
+      end
+    end
+
+    describe "アイコンの確認" do
+      it "本の一覧ページ" do
+        visit books_path
+
+        expect(page).to have_selector ".fa-solid.fa-comments, .fas.fa-comments"
+      end
+
+      it "本の詳細ページ" do
+        visit book_path(book)
+
+        within "#comments-count" do
+          expect(page).to have_selector ".fa-solid.fa-comments, .fas.fa-comments"
         end
       end
     end

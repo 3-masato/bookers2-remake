@@ -240,6 +240,9 @@ describe "[STEP3] 仕上げのテスト" do
         it "投稿のいいねボタンが表示される" do
           expect(page).to have_link href: book_favorites_path(other_book)
         end
+        it "投稿のコメント数が表示される" do
+          expect(page).to have_content other_book.book_comments.count
+        end
       end
 
       context "サイドバーの確認" do
