@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :edit, :update]
   resources :books, only: [:index, :show, :edit, :create, :destroy, :update] do
     resource :favorites, only: [:create, :destroy], defaults: { format: "js" }
-    resources :book_comments, only: [:create, :destroy]
+    resources :book_comments, only: [:create, :destroy], defaults: { format: "js" }
   end
 end
