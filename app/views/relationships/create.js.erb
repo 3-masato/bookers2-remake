@@ -1,11 +1,6 @@
 {
-  const user_id = <%= @user.id %>;
-  const current_user_id = <%= current_user.id %>;
+  $(`#follow-<%= @user.id %>`).html(`<%= render "relationships/btn", user: @user %>`);
 
-  $(`#follow-${user_id}`).html(`<%= render "relationships/btn", user: @user %>`);
-  $(`.user-followings-count[data-user-id="${user_id}"]`).html(`<%= render "relationships/followings-count", user: @user %>`);
-  $(`.user-followers-count[data-user-id="${user_id}"]`).html(`<%= render "relationships/followers-count", user: @user %>`);
-
-  $(`.user-followings-count[data-user-id="${current_user_id}"]`).html(`<%= render "relationships/followings-count", user: current_user %>`);
-  $(`.user-followers-count[data-user-id="${current_user_id}"]`).html(`<%= render "relationships/followers-count", user: current_user %>`);
+  <%= render "relationships/update-count", user: @user %>
+  <%= render "relationships/update-count", user: current_user %>
 }

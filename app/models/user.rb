@@ -39,5 +39,6 @@ class User < ApplicationRecord
 
   def following?(user)
     followings.include?(user)
+    # followings.any? { |following| following.id == user.id }
   end
 end
