@@ -5,11 +5,23 @@
     <div class="text-center"><%= image_tag user.get_profile_image, size: "128x128" %></div>
     <div class="font-weight-bold h5 my-2"><%= user.name %></div>
     <div><%= user.introduction %></div>
+    <div class="user-followings-count" data-user-id="<%= user.id %>">
+      <%= render "relationships/followings-count", user: user %>
+    </div>
+    <div class="user-followers-count" data-user-id="<%= user.id %>">
+      <%= render "relationships/followers-count", user: user %>
+    </div>
   </div>
 
-  <div class="text-center">
-    <%= link_to edit_user_path(user), class: "mx-auto btn btn-sm btn-outline-secondary px-4" do %>
-      <i class="fa-solid fa-user-gear"></i>
-    <% end %>
-  </div>
+  <% if user == current_user %>
+    <div class="text-center">
+      <%= link_to edit_user_path(user), class: "mx-auto btn btn-sm btn-outline-secondary px-4" do %>
+        <i class="fa-solid fa-user-gear"></i>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center" id="follow-<%= user.id %>">
+      <%= render "relationships/btn", user: user %>
+    </div>
+  <% end %>
 </section>

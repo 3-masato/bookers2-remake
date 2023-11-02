@@ -1,0 +1,8 @@
+<section class="mb-4">
+  <% if @users.exists? %>
+    <%= render "users/index", users: @users, heading: heading %>
+  <% else %>
+    <h2><%= heading %></h2>
+    <p>There are no users.</p>
+  <% end %>
+</section>

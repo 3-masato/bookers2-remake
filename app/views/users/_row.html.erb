@@ -5,7 +5,21 @@
   <td data-col="name">
     <%= user.name %>
   </td>
-
+  <td data-col="followings">
+    <div class="user-followings-count" data-user-id="<%= user.id %>">
+      <%= render "relationships/followings-count", user: user %>
+    </div>
+  </td>
+  <td data-col="followers">
+    <div class="user-followers-count" data-user-id="<%= user.id %>">
+      <%= render "relationships/followers-count", user: user %>
+    </div>
+  </td>
+  <td data-col="follow-btn">
+    <div id="follow-<%= user.id %>">
+      <%= render "relationships/btn", user: user %>
+    </div>
+  </td>
   <td data-col="show">
     <%= link_to 'Show', user %>
   </td>
