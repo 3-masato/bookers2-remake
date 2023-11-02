@@ -1,0 +1,13 @@
+<%= render "layouts/frame", user: @user, type: :full do %>
+  <% if @records.size == 0 %>
+    <h2>No results for "<%= @content %>"</h2>
+    <p><%= no_result_text %></p>
+  <% else %>
+    <% case @target %>
+    <% when "user" %>
+      <%= render 'users/index', users: @records, heading: "Users search for \"#{@content}\"" %>
+    <% when "book" %>
+      <%= render 'books/index', books: @records, heading: "Books search for \"#{@content}\"" %>
+    <% end %>
+  <% end %>
+<% end %>

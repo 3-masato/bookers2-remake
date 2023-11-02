@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root to: "homes#top"
   get "home/about" => "homes#about"
+  get "search" => "searches#search"
 
   resources :users, only: [:index, :show, :edit, :update] do
     resource :relationships, only: [:create, :destroy], defaults: { format: "js" }
