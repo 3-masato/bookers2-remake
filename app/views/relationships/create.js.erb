@@ -8,6 +8,4 @@
 
   $(`.user-followings-count[data-user-id="${current_user_id}"]`).html(`<%= render "relationships/followings-count", user: current_user %>`);
   $(`.user-followers-count[data-user-id="${current_user_id}"]`).html(`<%= render "relationships/followers-count", user: current_user %>`);
-
-  console.log("create");
 }
