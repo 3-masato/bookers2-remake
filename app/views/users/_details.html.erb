@@ -20,8 +20,9 @@
       <% end %>
     </div>
   <% else %>
-    <div class="text-center" id="follow-<%= user.id %>">
+    <div class="d-flex flex-wrap justify-content-around align-items-center mx-auto" id="follow-<%= user.id %>">
       <%= render "relationships/btn", user: user %>
+      <%= render "rooms/btn", user: user %>
     </div>
   <% end %>
 </section>

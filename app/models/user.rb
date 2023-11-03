@@ -18,6 +18,9 @@ class User < ApplicationRecord
   has_many :followings, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
+  has_many :chats, dependent: :destroy
+  has_many :entries, dependent: :destroy
+
   validates :name, uniqueness: true, length: { in: 2..20 }
   validates :introduction, length: { maximum: 50 }
 
@@ -42,5 +45,37 @@ class User < ApplicationRecord
   def following?(user)
     followings.include?(user)
     # followings.any? { |following| following.id == user.id }
+  end
+
+  def chat_data(other_user)
+    self_user_entry = Entry.where(user_id: self.id)
+    other_user_entry = Entry.where(user_id: other_user.id)
+
+    current_room_id = find_common_room_id(self_user_entry, other_user_entry)
+
+    if current_room_id
+      { room_id: current_room_id }
+    else
+      {
+        room: Room.new,
+        entry: Entry.new
+      }
+    end
+  end
+
+  private
+  # Finds the common room ID shared between two users based on their entries.
+  # If no common room exists, returns nil.
+  #
+  # @param user_a_entries [Entry] Entries related to the first user.
+  # @param user_b_entries [Entry] Entries related to the second user.
+  #
+  # @return [Integer, nil] Returns the ID of the common room if found, otherwise nil.
+  def find_common_room_id(user_a_entries, user_b_entries)
+    user_a_entries.pluck(:room_id).each do |a_room_id|
+      return a_room_id if user_b_entries.exists?(room_id: a_room_id)
+    end
+
+    nil
   end
 end

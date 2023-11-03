@@ -15,4 +15,7 @@ Rails.application.routes.draw do
     resource :favorites, only: [:create, :destroy], defaults: { format: "js" }
     resources :book_comments, only: [:create, :destroy], defaults: { format: "js" }
   end
+
+  resources :chats, only: [:create], defaults: { format: "js" }
+  resources :rooms, only: [:show, :create]
 end

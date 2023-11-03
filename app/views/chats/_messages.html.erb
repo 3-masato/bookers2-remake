@@ -1,0 +1,18 @@
+<% if chats.present? %>
+  <% chats.each do |msg| %>
+    <div class="chat-message-item">
+      <% if current_user == msg.user %>
+        <div class="chat-message-item-body chat-message-item-self" data-user="self">
+          <div class="chat-message-item-text"><%= msg.message %></div>
+        </div>
+      <% else %>
+        <div class="chat-message-item-body" data-user="other">
+          <div class="chat-message-item-icon">
+            <%= image_tag msg.user.get_profile_image, size: "48x48" %>
+          </div>
+          <div class="chat-message-item-text"><%= msg.message %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
