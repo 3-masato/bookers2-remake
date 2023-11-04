@@ -4,8 +4,7 @@ class ChatsController < ApplicationController
 
   def create
     @chat = current_user.chats.new(chat_params)
-    @chats = current_user.chats
-
+    @chats = Room.find(params[:chat][:room_id]).chats
 
     handle_redirect unless @chat.save
   end
