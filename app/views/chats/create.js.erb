@@ -1,2 +1,2 @@
-$("#chat-messages").html("<%= j(render "chats/messages", chats: @chats) %>");
+$("#chat-messages").html("<%= j(render "chats/messages", chats: @chats, type: :create) %>");
 $("#input-message").val("");

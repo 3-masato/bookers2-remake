@@ -16,3 +16,12 @@
     </div>
   <% end %>
 <% end %>
+
+<script id="chat-messages-scroll">
+  $("#chat-messages .chat-message-item:last-of-type").get(0)?.scrollIntoView({
+    behavior: "<%= type == :init ? "instant" : "smooth" %>",
+    block: "start",
+    inline: "nearest"
+  });
+  $("script#chat-messages-scroll").remove();
+</script>

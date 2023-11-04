@@ -23,12 +23,8 @@
 
     <div class="chat-container">
       <div class="chat-message" id="chat-messages">
-        <%= render "chats/messages", chats: @chats %>
+        <%= render "chats/messages", chats: @chats, type: :init %>
       </div>
-      <script id="chat-messages-scroll">
-        $("#chat-messages").scrollTop($("#chat-messages").get(0).scrollHeight);
-        $("script#chat-messages-scroll").remove();
-      </script>
 
       <div class="chat-form form-body">
         <%= form_with model: @chat, local: false do |f| %>
