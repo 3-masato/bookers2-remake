@@ -9,6 +9,13 @@ class ChatsController < ApplicationController
     handle_redirect unless @chat.save
   end
 
+  def destroy
+    chat = Chat.find(params[:id])
+    room = chat.room
+    chat.destroy
+    @chats = room.chats
+  end
+
   private
   def chat_params
     params.require(:chat).permit(:message, :room_id)

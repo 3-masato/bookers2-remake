@@ -1,0 +1,2 @@
+$("#chat-messages").html("<%= j(render "chats/messages", chats: @chats, type: :destroy) %>");
+console.log("destroy");

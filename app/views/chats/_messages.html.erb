@@ -3,7 +3,12 @@
     <div class="chat-message-item">
       <% if current_user == msg.user %>
         <div class="chat-message-item-body chat-message-item-self" data-user="self">
-          <div class="chat-message-item-text"><%= msg.message %></div>
+          <div class="chat-message-item-text">
+            <span><%= msg.message %></span>
+            <%= button_to chat_path(msg), method: :delete, data: { confirm: "Do you really want to delete it?" }, remote: true, class: "chat-message-item-destroy" do %>
+              <i class="fa-solid fa-circle-xmark"></i>
+            <% end %>
+          </div>
         </div>
       <% else %>
         <div class="chat-message-item-body" data-user="other">
@@ -17,11 +22,29 @@
   <% end %>
 <% end %>
 
-<script id="chat-messages-scroll">
-  $("#chat-messages .chat-message-item:last-of-type").get(0)?.scrollIntoView({
-    behavior: "<%= type == :init ? "instant" : "smooth" %>",
-    block: "start",
-    inline: "nearest"
-  });
-  $("script#chat-messages-scroll").remove();
-</script>
+<%
+# This script is used to scroll to the last chat message within the page.
+
+# Scroll behavior based on the type:
+# :init - Instant scroll on initial page load.
+# :create - Smooth scroll when a message is posted.
+# :destroy - No scroll needed.
+
+# Retrieves the last ".chat-message-item" within the "#chat-messages",
+# and uses the `scrollIntoView` method to scroll it into complete view within the viewport.
+# If there are no chat messages, the element will be undefined, thus using the optional chaining operator `?.`
+# to avoid errors in that case.
+
+# To prevent accumulation of scripts, once the scrolling is complete,
+# this script tag is removed from the HTML document.
+%>
+<% unless type == :destroy %>
+  <script id="chat-messages-scroll">
+    $("#chat-messages .chat-message-item:last-of-type").get(0)?.scrollIntoView({
+      behavior: "<%= type == :init ? "instant" : "smooth" %>",
+      block: "start",
+      inline: "nearest"
+    });
+    $("script#chat-messages-scroll").remove();
+  </script>
+<% end %>
