@@ -13,16 +13,18 @@
     </div>
   </div>
 
-  <% if user == current_user %>
-    <div class="text-center">
-      <%= link_to edit_user_path(user), class: "mx-auto btn btn-sm btn-outline-secondary px-4" do %>
-        <i class="fa-solid fa-user-gear"></i>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="d-flex flex-wrap justify-content-around align-items-center mx-auto" id="follow-<%= user.id %>">
-      <%= render "relationships/btn", user: user %>
-      <%= render "rooms/btn", user: user %>
-    </div>
+  <% unless user.guest_user? %>
+    <% if user == current_user %>
+      <div class="text-center">
+        <%= link_to edit_user_path(user), class: "mx-auto btn btn-sm btn-outline-secondary px-4" do %>
+          <i class="fa-solid fa-user-gear"></i>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="d-flex flex-wrap justify-content-around align-items-center mx-auto" id="follow-<%= user.id %>">
+        <%= render "relationships/btn", user: user %>
+        <%= render "rooms/btn", user: user %>
+      </div>
+    <% end %>
   <% end %>
 </section>

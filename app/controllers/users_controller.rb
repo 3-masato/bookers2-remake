@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_correct_user, only: [:edit, :update]
+  before_action :ensure_guest_user, only: [:edit]
 
   rescue_from ActiveRecord::RecordNotFound do |e|
     redirect_to users_path
@@ -37,6 +38,13 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     unless user == current_user
       redirect_to user_path(current_user)
+    end
+  end
+
+  def ensure_guest_user
+    user = User.find(params[:id])
+    if user.guest_user?
+      redirect_to user_path(current_user), alert: "Guest users cannot go to the edit profile page."
     end
   end
 end
