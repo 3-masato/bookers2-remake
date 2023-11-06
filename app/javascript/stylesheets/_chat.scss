@@ -1,6 +1,7 @@
 $border-style: 1px solid #cccccc;
 
 .chat-container {
+  position: relative;
   border: 1px solid #cccccc;
 }
 
@@ -72,4 +73,12 @@ $border-style: 1px solid #cccccc;
 .chat-form {
   padding: 0.5rem 1rem;
   border-top: $border-style;
+}
+
+.chat-error {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
 }

@@ -1,43 +1,44 @@
 <%= render "layouts/frame", user: @user, type: :full do %>
   <div class="row">
-  <aside class="col-md-3">
-    <h3 class="bold">Messages</h3>
-    <hr />
-    <div class="bold h4">All conversations</div>
-    <div>
-      <% @my_rooms.each do |room| %>
-        <%= link_to room_path(room), class: "btn btn-outline-primary btn-block border-0 rounded-0 text-left" do %>
-          <% room_users = room.users_except_current_user(current_user) %>
-          <% room_users.each do |user| %>
-            <%= image_tag user.get_profile_image, size: "32x32", class: "mr-2" %>
-            <span><%= user.name %></span>
+    <aside class="col-md-3">
+      <h3 class="bold">Messages</h3>
+      <hr />
+      <div class="bold h4">All conversations</div>
+      <div>
+        <% @my_rooms.each do |room| %>
+          <%= link_to room_path(room), class: "btn btn-outline-primary btn-block border-0 rounded-0 text-left" do %>
+            <% room_users = room.users_except_current_user(current_user) %>
+            <% room_users.each do |user| %>
+              <%= image_tag user.get_profile_image, size: "32x32", class: "mr-2" %>
+              <span><%= user.name %></span>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-    </div>
-  </aside>
-  <section class="col-md-9 mb-2">
-    <h2>Chat with <strong><%= @user.name %></strong></h2>
-
-    <%= link_to "Back to User List", users_path %>
-
-    <div class="chat-container">
-      <div class="chat-message" id="chat-messages">
-        <%= render "chats/messages", chats: @chats, type: :init %>
       </div>
+    </aside>
+    <section class="col-md-9 mb-2">
+      <h2>Chat with <strong><%= @user.name %></strong></h2>
 
-      <div class="chat-form form-body">
-        <%= form_with model: @chat, local: false do |f| %>
-          <div class="d-flex">
-            <%= f.text_field :message, placeholder: "Enter message here", class: "form-control mr-2", id: "input-message" %>
-            <%= f.hidden_field :room_id, value: @room.id %>
-            <%= f.button type: "submit", class: "btn btn-success btn-sm d-flex justify-content-center align-items-center px-3" do %>
-              <i class="fa-solid fa-paper-plane"></i><span class="d-md-block d-none ml-2">Send</span>
-            <% end %>
-          </div>
-        <% end %>
+      <%= link_to "Back to User List", users_path %>
+
+      <div class="chat-container">
+        <div class="chat-message" id="chat-messages">
+          <%= render "chats/messages", chats: @chats, type: :init %>
+        </div>
+
+        <div class="chat-form form-body">
+          <%= form_with model: @chat, local: false do |f| %>
+            <div class="d-flex">
+              <%= f.text_field :message, placeholder: "Enter message here", class: "form-control mr-2", id: "input-message" %>
+              <%= f.hidden_field :room_id, value: @room.id %>
+              <%= f.button type: "submit", class: "btn btn-success btn-sm d-flex justify-content-center align-items-center px-3" do %>
+                <i class="fa-solid fa-paper-plane"></i><span class="d-md-block d-none ml-2">Send</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="chat-error" id="chat-error"></div>
       </div>
-    </div>
-  </section>
+    </section>
   </div>
 <% end %>

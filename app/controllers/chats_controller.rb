@@ -6,7 +6,7 @@ class ChatsController < ApplicationController
     @chat = current_user.chats.new(chat_params)
     @chats = Room.find(params[:chat][:room_id]).chats
 
-    handle_redirect unless @chat.save
+    render :validate unless @chat.save
   end
 
   def destroy
@@ -28,6 +28,6 @@ class ChatsController < ApplicationController
   end
 
   def handle_redirect
-    redirect_back(fallback_location: root_path)
+    redirect_to books_path
   end
 end
