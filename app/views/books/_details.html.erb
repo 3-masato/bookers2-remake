@@ -39,6 +39,7 @@
   <div class="d-flex justify-content-around mx-auto w-50">
     <div id="comments-count"><%= render "book_comments/count", book: book %></div>
     <div id="fav-<%= book.id %>"><%= render "favorites/btn", book: book %></div>
+    <div id="view-count"><%= render "books/view-count", book: book %></div>
   </div>
 
   <hr>
