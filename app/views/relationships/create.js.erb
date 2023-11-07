@@ -1,6 +1,6 @@
 {
-  $(`#follow-<%= @user.id %>`).html(`<%= render "relationships/btn", user: @user %>`);
+  $(`#follow-<%= @user.id %>`).html(`<%= j(render "relationships/btn", user: @user) %>`);
 
-  <%= render "relationships/update-count", user: @user %>
-  <%= render "relationships/update-count", user: current_user %>
+  <%= render "relationships/js/update-count", user: @user %>
+  <%= render "relationships/js/update-count", user: current_user %>
 }
