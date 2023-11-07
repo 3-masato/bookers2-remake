@@ -1,0 +1,64 @@
+<%
+# The `tabs` array is an array of hashes, each containing settings for each tab.
+
+# Each tab should have the following attributes:
+# - id (String): A unique identifier for the tab. Used as the ID for the DOM element.
+# - title (String): The title displayed on the tab.
+# - content (String, optional): Direct text or HTML content to display inside the tab.
+# - content_partial (String, optional): Path to a partial that should be rendered as the content of the tab.
+# - locals (Hash, optional): Additional local variables to pass to the content_partial, if any.
+
+# Usage example:
+
+# tabs = [
+#   {
+#     id: "first_tab",
+#     title: "First Tab",
+#     content: 'This is the content for the first tab.'
+#   },
+#   {
+#     id: "second_tab",
+#     title: "Second Tab",
+#     content_partial: "shared/second_tab_content",
+#     locals: { additional_data: @some_data }
+#   }
+#   # Other tab configurations...
+# ]
+%>
+
+<div class="tabs">
+  <ul class="nav nav-tabs">
+    <% tabs.each_with_index do |tab, index| %>
+      <li class="nav-item">
+        <a
+          class="nav-link <%= "active" if index.zero? %>"
+          id="<%= tab[:id] %>-tab"
+          data-toggle="tab"
+          href="#<%= tab[:id] %>"
+          role="tab"
+          aria-controls="<%= tab[:id] %>"
+          aria-selected="<%= index.zero? ? "true" : "false" %>"
+        >
+          <%= tab[:title] %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <% tabs.each_with_index do |tab, index| %>
+      <div
+        class="tab-pane p-4 fade <%= "show active" if index.zero? %>"
+        id="<%= tab[:id] %>"
+        role="tabpanel"
+        aria-labelledby="<%= tab[:id] %>-tab"
+      >
+        <% if tab[:content] %>
+          <%= tab[:content] %>
+        <% elsif tab[:content_partial] %>
+          <%= render partial: tab[:content_partial], locals: tab[:locals] || {} %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
