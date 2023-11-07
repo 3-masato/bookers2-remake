@@ -1,0 +1,6 @@
+$(`#books-<%= @user.id %>`).html(`<%= j(render partial: "books/index", locals: {
+  heading: "Favorited",
+  books: @favorited_books,
+  empty_message: "This user has not yet favorited anything."
+}) %>`);
+<%= render "users/js/show-books", show_id: "#show-favorited" %>

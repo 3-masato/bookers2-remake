@@ -1,0 +1,7 @@
+<% if user %>
+  <%= render partial: "books/index", locals: {
+    heading: "Books",
+    books: user.books,
+    empty_message: empty_index_text(user)
+  } %>
+<% end %>

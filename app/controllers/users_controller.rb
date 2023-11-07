@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_correct_user, only: [:edit, :update]
   before_action :ensure_guest_user, only: [:edit]
+  before_action :set_user, only: [:show, :edit, :posted, :favorited, :update]
 
   rescue_from ActiveRecord::RecordNotFound do |e|
     redirect_to users_path
@@ -13,15 +14,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    self.posted # Display `posted` by default
   end
 
   def edit
-    @user = User.find(params[:id])
+  end
+
+  def posted
+    @posted_books = @user.books
+  end
+
+  def favorited
+    @favorited_books = @user.favorited_books
   end
 
   def update
-    @user = User.find(params[:id])
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "You have updated user successfully."
     else
@@ -32,6 +39,10 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :introduction, :profile_image)
+  end
+
+  def set_user
+    @user = User.find(params[:id])
   end
 
   def ensure_correct_user

@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     resource :relationships, only: [:create, :destroy], defaults: { format: "js" }
     get "followings" => "relationships#followings", as: "followings"
     get "followers" => "relationships#followers", as: "followers"
+    member do
+      get "posted", defaults: { format: "js" }
+      get "favorited", defaults: { format: "js" }
+    end
   end
 
   resources :books, only: [:index, :show, :edit, :create, :destroy, :update] do

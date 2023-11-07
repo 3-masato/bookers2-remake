@@ -1,7 +1,3 @@
 <%= render "layouts/frame", user: @user, type: :sidebar do %>
-  <%= render partial: "books/index", locals: {
-    heading: "Books",
-    books: @user.books,
-    empty_message: empty_index_text(@user)
-  } %>
+  <%= render "users/show", user: @user %>
 <% end %>

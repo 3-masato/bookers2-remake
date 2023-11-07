@@ -1,0 +1,15 @@
+<div class="d-flex">
+  <div class="mr-2">
+    <%= link_to posted_user_path(user), method: :get, remote: true, class: "show-books btn btn-primary btn-block border-0 rounded-0", id: "show-posted" do %>
+      Books
+    <% end %>
+  </div>
+  <div class="mr-2">
+    <%= link_to favorited_user_path(user), method: :get, remote: true, class: "show-books btn btn-outline-primary btn-block border-0 rounded-0", id: "show-favorited" do %>
+      Favorited
+    <% end %>
+  </div>
+</div>
+<div id="books-<%= user.id %>">
+  <%= render "users/posted-books", user: @user %>
+</div>
