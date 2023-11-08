@@ -1,15 +1,19 @@
-<div class="d-flex">
-  <div class="mr-2">
-    <%= link_to posted_user_path(user), method: :get, remote: true, class: "show-books btn btn-primary btn-block border-0 rounded-0", id: "show-posted" do %>
+<div class="d-flex my-2">
+  <div class="w-25">
+    <%= render "users/tab-button", path: user_path(user), isactive: page == :books do %>
       Books
     <% end %>
   </div>
-  <div class="mr-2">
-    <%= link_to favorited_user_path(user), method: :get, remote: true, class: "show-books btn btn-outline-primary btn-block border-0 rounded-0", id: "show-favorited" do %>
+  <div class="w-25">
+    <%= render "users/tab-button", path: favorited_user_path(user), isactive: page == :favorited do %>
       Favorited
     <% end %>
   </div>
 </div>
 <div id="books-<%= user.id %>">
-  <%= render "users/posted-books", user: @user %>
+  <%= render partial: "books/index", locals: {
+    heading: page.capitalize,
+    books: books,
+    empty_message: empty_index_text(user, page)
+  } %>
 </div>

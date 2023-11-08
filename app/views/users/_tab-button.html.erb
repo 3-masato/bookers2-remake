@@ -1,0 +1,4 @@
+<% class_name = "btn #{isactive ? "btn-primary" : "btn-outline-secondary"} btn-block border-1 rounded-0" %>
+<%= link_to path, class: class_name do %>
+  <%= yield %>
+<% end %>

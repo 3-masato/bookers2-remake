@@ -14,18 +14,14 @@ class UsersController < ApplicationController
   end
 
   def show
-    self.posted # Display `posted` by default
+    @books = @user.books.with_details
   end
 
   def edit
   end
 
-  def posted
-    @posted_books = @user.books
-  end
-
   def favorited
-    @favorited_books = @user.favorited_books
+    @books = @user.favorited_books.with_details
   end
 
   def update

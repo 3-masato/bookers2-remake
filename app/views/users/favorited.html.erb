@@ -1,0 +1,3 @@
+<%= render "layouts/frame", user: @user, type: :sidebar do %>
+  <%= render "users/show", user: @user, books: @books, page: :favorited %>
+<% end %>
